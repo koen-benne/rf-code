@@ -1,3 +1,5 @@
+# TODO's: better error handling, separating functionality into modules, less global variables, better exit strategy
+
 import sys
 import tty
 import termios
@@ -7,10 +9,12 @@ from vosk import Model, KaldiRecognizer
 from threading import Thread
 from queue import Queue
 import pyaudio
+from pydub import AudioSegment
+from io import BytesIO
 
 CHANNELS = 1
 FRAME_RATE = 16000
-RECORD_SECONDS = 20
+RECORD_SECONDS = 10
 AUDIO_FORMAT = pyaudio.paInt16
 SAMPLE_SIZE = 2
 PRINT_OUTPUT = True
@@ -31,7 +35,17 @@ def load_online_radio(url):
     response = requests.get(url, stream=True)
     return response
 
-def record_microphone(chunk_size = 1024):
+def process_audio_block(block):
+    try:
+        pcm_block = AudioSegment.from_mp3(BytesIO(block))
+        pcm_block = pcm_block.set_channels(CHANNELS).set_frame_rate(FRAME_RATE).set_sample_width(SAMPLE_SIZE)
+
+        return pcm_block.raw_data
+
+    except Exception as e:
+        print(e)
+
+def audio_stream_consumer(chunk_size, frames):
     p = pyaudio.PyAudio()
     stream = p.open(format=AUDIO_FORMAT,
                     channels=CHANNELS,
@@ -40,22 +54,23 @@ def record_microphone(chunk_size = 1024):
                     frames_per_buffer=chunk_size)
 
     radio_stream = load_online_radio(RADIO_URL)
-
-    frames = []
     segment_duration = int((FRAME_RATE * RECORD_SECONDS) / chunk_size)  # Duration of segments in chunks
 
     try:
         for block in radio_stream.iter_content(chunk_size=chunk_size):
-            if not messages.empty():
+            if messages.empty():
                 break
 
             frames.append(block)
-            if WRITE_AUDIO:
-                stream.write(block)
 
             if len(frames) >= segment_duration:
-                recordings.put(frames.copy())
-                frames = []
+                print("Add frames")
+                audio = process_audio_block(b''.join(frames.copy()))
+                recordings.put(audio)
+                frames.clear()
+                if WRITE_AUDIO:
+                    stream.write(audio)
+
     except Exception as e:
         print(e)
 
@@ -64,20 +79,31 @@ def record_microphone(chunk_size = 1024):
         stream.close()
         p.terminate()
 
+
+def record_radio(chunk_size=20000):
+
+    frames = []
+
+    # Start audio stream consumer thread
+    audio_consumer_thread = Thread(target=audio_stream_consumer, args=(chunk_size, frames))
+    audio_consumer_thread.start()
+    audio_consumer_thread.join()
+
+
 def speech_recognition(output):
     while not messages.empty():
         frames = recordings.get()
-        if rec.AcceptWaveform(b''.join(frames)):
+        if rec.AcceptWaveform(frames):
             result = json.loads(rec.Result())
             output.append(result["text"])
             if PRINT_OUTPUT:
-                print (result["text"] + "\n")
+                print("\n" + result["text"] + "\n")
 
 def start_recording():
     messages.put(True)
 
     print("Starting...")
-    record = Thread(target=record_microphone)
+    record = Thread(target=record_radio)
     record.start()
     transcribe = Thread(target=speech_recognition, args=(output,))
     transcribe.start()

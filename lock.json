@@ -43,6 +43,12 @@
         "url": "https://files.pythonhosted.org/packages/13/a3/a812df4e2dd5696d1f351d58b8fe16a405b234ad2886a0dab9183fb78109/pycparser-2.22-py3-none-any.whl",
         "version": "2.22"
       },
+      "pydub": {
+        "sha256": "65617e33033874b59d87db603aa1ed450633288aefead953b30bded59cb599a6",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/a6/53/d78dc063216e62fc55f6b2eebb447f6a4b0a59f55c8406376f76bf959b08/pydub-0.25.1-py2.py3-none-any.whl",
+        "version": "0.25.1"
+      },
       "requests": {
         "sha256": "58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f",
         "type": "url",
@@ -94,6 +100,7 @@
         "idna": [],
         "pyaudio": [],
         "pycparser": [],
+        "pydub": [],
         "requests": [
           "certifi",
           "charset-normalizer",
@@ -114,5 +121,5 @@
       }
     }
   },
-  "invalidationHash": "b513f859c91edb50eb8c9f7e1aa86f63bcfdd1bce11473ffbe46f2a67e66ad88"
+  "invalidationHash": "4aaeb1e4541c53d82366651cb1329e029f978064f07b4291d9331b0c748aee44"
 }

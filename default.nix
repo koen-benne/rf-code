@@ -11,10 +11,12 @@
   deps = {nixpkgs, ...}: {
     python = nixpkgs.python311;
     portaudio = nixpkgs.portaudio;
+    ffmpeg = nixpkgs.ffmpeg;
   };
 
   mkDerivation = {
     src = ./.;
+    nativeBuildInputs = [config.deps.ffmpeg];
   };
 
   # This is not strictly required, but setting it will keep most dependencies
@@ -25,6 +27,12 @@
     env.autoPatchelfIgnoreMissingDeps = true;
     mkDerivation.buildInputs = [
       config.deps.portaudio
+    ];
+  };
+  pip.overrides.ffmpeg-audio = {
+    env.autoPatchelfIgnoreMissingDeps = true;
+    mkDerivation.buildInputs = [
+      config.deps.ffmpeg
     ];
   };
 }

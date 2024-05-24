@@ -5,7 +5,9 @@ version = "0.1.0"
 dependencies = [
   "PyAudio",
   "vosk",
+  "cffi",
   "gpt4all",
+  "pydub",
   # "transformers",
   # "torch",
 ]

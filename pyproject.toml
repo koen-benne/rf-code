@@ -1,0 +1,16 @@
+[project]
+name = "rf-voice-to-blog"
+version = "0.1.0"
+
+dependencies = [
+  "PyAudio",
+  "vosk",
+  "gpt4all",
+  # "transformers",
+  # "torch",
+]
+
+[tool.setuptools.packages.find]
+include = [
+  "rf-voice-to-blog",
+]

@@ -4,7 +4,6 @@ import json
 import termios
 from vosk import Model, KaldiRecognizer, SetLogLevel
 from threading import Thread
-from queue import Queue
 from config import FRAME_RATE, USE_EXAMPLE_AUDIO, VERBOSE
 from audio_consumers import audio_stream_consumer, audio_file_consumer
 from blogger import generate_blogpost

@@ -20,6 +20,8 @@ SAMPLE_SIZE = 2
 PRINT_OUTPUT = True
 WRITE_AUDIO = True
 RADIO_URL = "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
+USE_EXAMPLE_AUDIO = True
+EXAMPLE_AUDIO_FILE = "audio.mp3"
 
 model = Model(model_name = "vosk-model-nl-spraakherkenning-0.6")
 rec = KaldiRecognizer(model, FRAME_RATE)
@@ -30,6 +32,22 @@ messages = Queue()
 recordings = Queue()
 
 output = []
+
+def setup_audio_stream():
+    p = pyaudio.PyAudio()
+    stream = p.open(format=AUDIO_FORMAT,
+                    channels=CHANNELS,
+                    rate=FRAME_RATE,
+                    output=True,
+                    frames_per_buffer=10000)
+    return stream, p
+
+def close_audio_stream(stream, p):
+    if stream is not None:
+        stream.stop_stream()
+        stream.close()
+    if p is not None:
+        p.terminate() 
 
 def load_online_radio(url):
     response = requests.get(url, stream=True)
@@ -45,19 +63,16 @@ def process_audio_block(block):
     except Exception as e:
         print(e)
 
-def audio_stream_consumer(chunk_size, frames):
-    p = pyaudio.PyAudio()
-    stream = p.open(format=AUDIO_FORMAT,
-                    channels=CHANNELS,
-                    rate=FRAME_RATE,
-                    output=True,
-                    frames_per_buffer=chunk_size)
-
-    radio_stream = load_online_radio(RADIO_URL)
+def consume_audio_data(chunk_size, frames, data_source):
     segment_duration = int((FRAME_RATE * RECORD_SECONDS) / chunk_size)  # Duration of segments in chunks
 
+    stream = None
+    p = None
+    if WRITE_AUDIO:
+        stream, p = setup_audio_stream()
+
     try:
-        for block in radio_stream.iter_content(chunk_size=chunk_size):
+        for block in data_source(chunk_size):
             if messages.empty():
                 break
 
@@ -67,17 +82,36 @@ def audio_stream_consumer(chunk_size, frames):
                 audio = process_audio_block(b''.join(frames.copy()))
                 recordings.put(audio)
                 frames.clear()
-                if WRITE_AUDIO:
+                if stream:
                     stream.write(audio)
 
     except Exception as e:
         print(e)
 
     finally:
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
+        if WRITE_AUDIO:
+            close_audio_stream(stream, p)
 
+def radio_stream_generator(chunk_size):
+    """Generates blocks of audio data from the radio stream."""
+    radio_stream = load_online_radio(RADIO_URL)
+    for block in radio_stream.iter_content(chunk_size=chunk_size):
+        yield block
+
+def file_stream_generator(chunk_size):
+    """Generates blocks of audio data from an audio file."""
+    with open(EXAMPLE_AUDIO_FILE, "rb") as f:
+        while True:
+            block = f.read(chunk_size)
+            if not block:
+                break
+            yield block
+
+def audio_stream_consumer(chunk_size, frames):
+    consume_audio_data(chunk_size, frames, radio_stream_generator)
+
+def audio_file_consumer(chunk_size, frames):
+    consume_audio_data(chunk_size, frames, file_stream_generator)
 
 def record_radio(chunk_size=20000):
 

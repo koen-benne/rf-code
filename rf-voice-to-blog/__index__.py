@@ -64,7 +64,6 @@ def audio_stream_consumer(chunk_size, frames):
             frames.append(block)
 
             if len(frames) >= segment_duration:
-                print("Add frames")
                 audio = process_audio_block(b''.join(frames.copy()))
                 recordings.put(audio)
                 frames.clear()
@@ -92,12 +91,12 @@ def record_radio(chunk_size=20000):
 
 def speech_recognition(output):
     while not messages.empty():
-        frames = recordings.get()
-        if rec.AcceptWaveform(frames):
+        audio = recordings.get()
+        if rec.AcceptWaveform(audio):
             result = json.loads(rec.Result())
             output.append(result["text"])
             if PRINT_OUTPUT:
-                print("\n" + result["text"] + "\n")
+                print(result["text"])
 
 def start_recording():
     messages.put(True)

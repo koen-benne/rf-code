@@ -1,7 +1,8 @@
 from config import RADIO_URL, RECORD_SECONDS, FRAME_RATE, WRITE_AUDIO, EXAMPLE_AUDIO_FILE
 from audio import load_online_radio, setup_audio_stream, close_audio_stream, process_audio_block
+from shared import messages, recordings
 
-def consume_audio_data(chunk_size, data_source, messages, recordings):
+def consume_audio_data(chunk_size, data_source):
     segment_duration = int((FRAME_RATE * RECORD_SECONDS) / chunk_size)  # Duration of segments in chunks
 
     stream = None
@@ -46,8 +47,8 @@ def file_stream_generator(chunk_size):
                 break
             yield block
 
-def audio_stream_consumer(chunk_size, messages, recordings):
-    consume_audio_data(chunk_size, radio_stream_generator, messages, recordings)
+def audio_stream_consumer(chunk_size):
+    consume_audio_data(chunk_size, radio_stream_generator)
 
-def audio_file_consumer(chunk_size, messages, recordings):
-    consume_audio_data(chunk_size, file_stream_generator, messages, recordings)
+def audio_file_consumer(chunk_size):
+    consume_audio_data(chunk_size, file_stream_generator)

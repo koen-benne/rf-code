@@ -16,7 +16,7 @@ rec.SetWords(True)
 messages = Queue()
 recordings = Queue()
 
-output = []
+transcriptions = []
 
 def speech_recognition(output):
     while not messages.empty():
@@ -39,7 +39,7 @@ def start_recording():
     print("Starting...")
     record = Thread(target=record_audio)
     record.start()
-    transcribe = Thread(target=speech_recognition, args=(output,))
+    transcribe = Thread(target=speech_recognition, args=(transcriptions,))
     transcribe.start()
 
     record.join()

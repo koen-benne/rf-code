@@ -12,11 +12,12 @@
     python = nixpkgs.python311;
     portaudio = nixpkgs.portaudio;
     ffmpeg = nixpkgs.ffmpeg;
+    flac = nixpkgs.flac;
   };
 
   mkDerivation = {
     src = ./.;
-    nativeBuildInputs = [config.deps.ffmpeg];
+    nativeBuildInputs = [config.deps.ffmpeg config.deps.flac];
   };
 
   # This is not strictly required, but setting it will keep most dependencies

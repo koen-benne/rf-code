@@ -19,6 +19,12 @@
         "url": "https://files.pythonhosted.org/packages/76/ac/a7305707cb852b7e16ff80eaf5692309bde30e2b1100a1fcacdc8f731d97/aiosignal-1.3.1-py3-none-any.whl",
         "version": "1.3.1"
       },
+      "annotated-types": {
+        "sha256": "0641064de18ba7a25dee8f96403ebc39113d0cb953a01429249d5c7564666a43",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/28/78/d31230046e58c207284c6b2c4e8d96e6d3cb4e52354721b944d3e1ee4aa5/annotated_types-0.6.0-py3-none-any.whl",
+        "version": "0.6.0"
+      },
       "anyio": {
         "sha256": "048e05d0f6caeed70d731f3db756d35dcc1f35747c8c403364a8332c630441b8",
         "type": "url",
@@ -60,6 +66,12 @@
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/25/9e/4b384283f92be0bcfb1a863ee392e1e1acf8dac36b8bd5cce0b44f0ed1f7/deepgram_sdk-3.2.7-py3-none-any.whl",
         "version": "3.2.7"
+      },
+      "distro": {
+        "sha256": "7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl",
+        "version": "1.9.0"
       },
       "frozenlist": {
         "sha256": "4f9c515e7914626b2a2e1e311794b4c35720a0be87af52b79ff8e1429fc25f19",
@@ -115,6 +127,12 @@
         "url": "https://files.pythonhosted.org/packages/2a/e2/5d3f6ada4297caebe1a2add3b126fe800c96f56dbe5d1988a2cbe0b267aa/mypy_extensions-1.0.0-py3-none-any.whl",
         "version": "1.0.0"
       },
+      "openai": {
+        "sha256": "aa2f381f476f5fa4df8728a34a3e454c321caa064b7b68ab6e9daa1ed082dbf9",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/e6/4e/9e9db238574aeb280377813ac2085c0df3e163d113d3a622039855a3de90/openai-1.25.1-py3-none-any.whl",
+        "version": "1.25.1"
+      },
       "packaging": {
         "sha256": "2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5",
         "type": "url",
@@ -132,6 +150,18 @@
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/13/a3/a812df4e2dd5696d1f351d58b8fe16a405b234ad2886a0dab9183fb78109/pycparser-2.22-py3-none-any.whl",
         "version": "2.22"
+      },
+      "pydantic": {
+        "sha256": "e029badca45266732a9a79898a15ae2e8b14840b1eabbb25844be28f0b33f3d5",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/ed/76/9a17032880ed27f2dbd490c77a3431cbc80f47ba81534131de3c2846e736/pydantic-2.7.1-py3-none-any.whl",
+        "version": "2.7.1"
+      },
+      "pydantic-core": {
+        "sha256": "470b94480bb5ee929f5acba6995251ada5e059a5ef3e0dfc63cca287283ebfa6",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/80/b8/b93d756b36425f7ad378dcb9fdf5f6a03b88afaae0476f7bdb31dd8964be/pydantic_core-2.18.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "2.18.2"
       },
       "pydub": {
         "sha256": "65617e33033874b59d87db603aa1ed450633288aefead953b30bded59cb599a6",
@@ -231,6 +261,7 @@
         "aiosignal": [
           "frozenlist"
         ],
+        "annotated-types": [],
         "anyio": [
           "idna",
           "sniffio"
@@ -254,6 +285,7 @@
           "verboselogs",
           "websockets"
         ],
+        "distro": [],
         "frozenlist": [],
         "gpt4all": [
           "requests",
@@ -277,9 +309,26 @@
         ],
         "multidict": [],
         "mypy-extensions": [],
+        "openai": [
+          "anyio",
+          "distro",
+          "httpx",
+          "pydantic",
+          "sniffio",
+          "tqdm",
+          "typing-extensions"
+        ],
         "packaging": [],
         "pyaudio": [],
         "pycparser": [],
+        "pydantic": [
+          "annotated-types",
+          "pydantic-core",
+          "typing-extensions"
+        ],
+        "pydantic-core": [
+          "typing-extensions"
+        ],
         "pydub": [],
         "pyyaml": [],
         "requests": [
@@ -317,5 +366,5 @@
       }
     }
   },
-  "invalidationHash": "e5a50b82d2ec57ab74064478667de19a834549f99cadea6c39e00803ed9da0c3"
+  "invalidationHash": "cd2cbc45062e038474d1061d5ee27250925008058fa735b57ce219420e42ee99"
 }

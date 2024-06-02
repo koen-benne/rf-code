@@ -4,7 +4,7 @@ import threading
 import subprocess
 import pyaudio
 import yaml
-from gpt4all import GPT4All
+from blogger import writeBlog, writeBlogGPT
 
 from deepgram import (
     DeepgramClient,
@@ -27,21 +27,15 @@ def main():
         currentTranscription = []
         completed = False
 
-        def writeBlog(transcription):
-            model = GPT4All("wizardlm-13b-v1.2.Q4_0.gguf")
-
-            response = model.generate(prompt=transcription + "\n\nDit is een automatisch transcript van een Feyenoord-Ajax wedstrijd. Mogelijk kloppen sommige woorden en interpunctie niet. Verbeter de tekst.",
-                temp=0)
-            print(response)
-
         def completeTranscription():
             transcription = " ".join(currentTranscription)
             print(transcription)
-            blogThread = threading.Thread(target=writeBlog, args=(transcription,))
+            blogThread = threading.Thread(target=writeBlogGPT, args=(transcription,))
             blogThread.start()
 
         # STEP 3: Define the event handlers for the connection
         def on_message(self, result, **kwargs):
+            nonlocal completed
             sentence = result.channel.alternatives[0].transcript
             if len(sentence) == 0:
                 if completed:
@@ -51,6 +45,7 @@ def main():
                 return
             completed = False
             currentTranscription.append(sentence)
+            print(sentence)
 
         def on_metadata(self, metadata, **kwargs):
             print(f"\n\n{metadata}\n\n")
@@ -72,6 +67,7 @@ def main():
                 object = yaml.safe_load(file)
                 return [f"{key}:{value}" for key, value in object.items()]
 
+
         # STEP 5: Configure Deepgram options for live transcription
         options = LiveOptions(
             model="nova-2",
@@ -79,7 +75,7 @@ def main():
             encoding="linear16",
             sample_rate=44100,
             channels=1,
-            # smart_format=True,
+            smart_format=True,
             keywords=getKeywords(),
             replace=getReplacements(),
         )

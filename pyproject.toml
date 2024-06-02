@@ -11,6 +11,7 @@ dependencies = [
   "SpeechRecognition",
   "deepgram-sdk",
   "pyyaml",
+  "openai"
   # "transformers",
   # "torch",
 ]

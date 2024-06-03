@@ -12,6 +12,8 @@ def writeBlog(transcription):
 def writeBlogGPT(transcription):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+    print(transcription)
+
     chat_completion = client.chat.completions.create(
         messages=[
             {
@@ -22,4 +24,5 @@ def writeBlogGPT(transcription):
         model="gpt-3.5-turbo",
     )
 
-    print(chat_completion.choices[0].message['content'])
+    corrected_transcript = chat_completion.choices[0].message.content
+    print(corrected_transcript)

@@ -1,6 +1,6 @@
 import threading
 from blogger import writeBlog, writeBlogGPT
-from threads import streamThread, fileStreamThread
+from threads import streamThread
 from config import API_KEY
 from getData import getKeywords, getReplacements
 
@@ -27,7 +27,7 @@ def main():
             blogThread = threading.Thread(target=writeBlogGPT, args=(transcription,))
             blogThread.start()
 
-        # STEP 3: Define the event handlers for the connection
+        # Event handler for receiving messages from deepgram
         def on_message(self, result, **kwargs):
             nonlocal completed
             sentence = result.channel.alternatives[0].transcript
@@ -40,18 +40,20 @@ def main():
             completed = False
             currentTranscription.append(sentence)
 
+        # Event handler for receiving metadata from deepgram
         def on_metadata(self, metadata, **kwargs):
             print(f"\n\n{metadata}\n\n")
 
+        # Event handler for receiving errors from deepgram
         def on_error(self, error, **kwargs):
             print(f"\n\n{error}\n\n")
 
-        # STEP 4: Register the event handlers
+        # Register the event handlers
         dg_connection.on(LiveTranscriptionEvents.Transcript, on_message)
         dg_connection.on(LiveTranscriptionEvents.Metadata, on_metadata)
         dg_connection.on(LiveTranscriptionEvents.Error, on_error)
 
-        # STEP 5: Configure Deepgram options for live transcription
+        # Configure Deepgram options for live transcription
         options = LiveOptions(
             model="nova-2",
             language="nl",
@@ -63,30 +65,28 @@ def main():
             replace=getReplacements()
         )
 
-        # STEP 6: Start the connection
+        # Start connection
         dg_connection.start(options)
 
-        # STEP 7: Create a lock and a flag for thread synchronization
+        # Lock and a flag for thread synchronization
         lock_exit = threading.Lock()
         exit = False
 
-        # STEP 9: Start the thread
-        # myHttp = threading.Thread(target=streamThread)
-        myHttp = threading.Thread(target=fileStreamThread, args=(dg_connection, lock_exit, exit))
+        # Start audio stream thread
+        myHttp = threading.Thread(target=streamThread, args=(dg_connection, lock_exit, exit))
         myHttp.start()
 
-        # STEP 10: Wait for user input to stop recording
+        # Wait for user input to stop recording
         input("Press Enter to stop recording...\n\n")
 
-        # STEP 11: Set the exit flag to True to stop the thread
+        # Set the exit flag to True to stop the thread
         lock_exit.acquire()
         exit = True
         lock_exit.release()
 
-        # STEP 12: Wait for the thread to finish
-        myHttp.join()
+        print("Stopping...")
 
-        # STEP 13: Close the connection to Deepgram
+        myHttp.join()
         dg_connection.finish()
 
         print("Finished")

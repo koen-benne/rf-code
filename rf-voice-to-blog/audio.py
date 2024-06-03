@@ -1,5 +1,6 @@
 import pyaudio
 import subprocess
+from contextlib import contextmanager
 from config import CHANNELS, FRAME_RATE, AUDIO_FORMAT
 
 def setup_audio_stream():
@@ -17,15 +18,16 @@ def close_audio_stream(stream, p):
     if p is not None:
         p.terminate()
 
-def setup_ffmpeg_process():
+@contextmanager
+def setup_ffmpeg_process(path):
     process = subprocess.Popen(
-        ['ffmpeg', '-i', '../audio.mp3', '-f', 's16le', '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '1', '-'],
+        ['ffmpeg', '-i', path, '-f', 's16le', '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '1', '-'],
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL
     )
 
-    return process
-
-def close_ffmpeg_process(process):
-    process.stdout.close()
-    process.wait()
+    try:
+        yield process
+    finally:
+        process.stdout.close()
+        process.wait()

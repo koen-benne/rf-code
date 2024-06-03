@@ -1,6 +1,7 @@
 from gpt4all import GPT4All
 from openai import OpenAI
 import os
+from config import OPPONENT
 
 def writeBlog(transcription):
     model = GPT4All("wizardlm-13b-v1.2.Q4_0.gguf")
@@ -18,7 +19,7 @@ def writeBlogGPT(transcription):
         messages=[
             {
                 "role": "user",
-                "content": "'" + transcription + "'\n\nDit is een automatisch transcript van een Feyenoord-Ajax wedstrijd. Mogelijk kloppen sommige woorden en interpunctie niet. Verbeter de tekst."
+                "content": "'" + transcription + "'\n\nDit is een automatisch transcript van een Feyenoord-" + OPPONENT + " wedstrijd. Mogelijk kloppen sommige woorden en interpunctie niet. Verbeter de tekst."
             }
         ],
         model="gpt-3.5-turbo",
@@ -44,7 +45,7 @@ def writeBlogGPT(transcription):
             messages=[
                 {
                     "role": "user",
-                    "content": "'" + corrected_transcript + "'\n\nLeg uit wat er gebeurt in dit fragment."
+                    "content": "'" + corrected_transcript + "'\n\nLeg uit wat er gebeurt in dit fragment van een transcript van de wedstrijd tussen Feyenoord en " + OPPONENT + "."
                 }
             ],
             model="gpt-3.5-turbo",

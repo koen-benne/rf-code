@@ -9,6 +9,8 @@ def writeBlog(transcription):
         temp=0)
     print(response)
 
+
+
 def writeBlogGPT(transcription):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 

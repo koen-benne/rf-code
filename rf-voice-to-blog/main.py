@@ -1,22 +1,14 @@
-import os
-import httpx
 import threading
-import subprocess
-import pyaudio
-import yaml
 from blogger import writeBlog, writeBlogGPT
-
-OPPONENT = "Ajax"
+from threads import streamThread, fileStreamThread
+from config import API_KEY
+from getData import getKeywords, getReplacements
 
 from deepgram import (
     DeepgramClient,
     LiveTranscriptionEvents,
     LiveOptions,
 )
-
-URL = "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
-
-API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 def main():
     try:
@@ -59,25 +51,6 @@ def main():
         dg_connection.on(LiveTranscriptionEvents.Metadata, on_metadata)
         dg_connection.on(LiveTranscriptionEvents.Error, on_error)
 
-        def getFeyenoordKeywords():
-            with open("keywords-feyenoord.yaml", "r") as file:
-                return yaml.safe_load(file)
-
-        def getOpponentKeywords():
-            with open("keywords-" + OPPONENT.lower() + ".yaml", "r") as file:
-                return yaml.safe_load(file)
-
-        def getFeyenoordReplacements():
-            with open("replacements-feyenoord.yaml", "r") as file:
-                object = yaml.safe_load(file)
-                return [f"{key}:{value}" for key, value in object.items()]
-
-        def getOpponentReplacements():
-            with open("replacements-" + OPPONENT.lower() + ".yaml", "r") as file:
-                object = yaml.safe_load(file)
-                return [f"{key}:{value}" for key, value in object.items()]
-
-
         # STEP 5: Configure Deepgram options for live transcription
         options = LiveOptions(
             model="nova-2",
@@ -86,8 +59,8 @@ def main():
             sample_rate=44100,
             channels=1,
             smart_format=True,
-            keywords=getFeyenoordKeywords() + getOpponentKeywords(),
-            replace=getFeyenoordReplacements() + getOpponentReplacements(),
+            keywords=getKeywords(),
+            replace=getReplacements()
         )
 
         # STEP 6: Start the connection
@@ -97,56 +70,9 @@ def main():
         lock_exit = threading.Lock()
         exit = False
 
-        # STEP 8: Define a thread that streams the audio and sends it to Deepgram
-        def streamThread():
-            with httpx.stream("GET", URL) as r:
-                for data in r.iter_bytes():
-                    lock_exit.acquire()
-                    if exit:
-                        break
-                    lock_exit.release()
-
-                    dg_connection.send(data)
-
-        def fileStreamThread():
-            p = pyaudio.PyAudio()
-            stream = p.open(format=pyaudio.paInt16,
-                            channels=1,
-                            rate=44100,
-                            output=True)
-
-            # Use ffmpeg to decode MP3 data on-the-fly
-            process = subprocess.Popen(
-                ['ffmpeg', '-i', '../audio.mp3', '-f', 's16le', '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '1', '-'],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL
-            )
-
-
-            while True:
-                data = process.stdout.read(1024)
-                if not data:
-                    break
-
-                lock_exit.acquire()
-                if exit:
-                    break
-                lock_exit.release()
-
-                dg_connection.send(data)  # Send raw PCM data
-                stream.write(data)  # Write data to PyAudio stream for playback
-
-            stream.stop_stream()
-            stream.close()
-            p.terminate()
-
-            # Ensure the ffmpeg process is properly terminated
-            process.stdout.close()
-            process.wait()
-
         # STEP 9: Start the thread
         # myHttp = threading.Thread(target=streamThread)
-        myHttp = threading.Thread(target=fileStreamThread)
+        myHttp = threading.Thread(target=fileStreamThread, args=(dg_connection, lock_exit, exit))
         myHttp.start()
 
         # STEP 10: Wait for user input to stop recording

@@ -1,26 +1,17 @@
 import yaml
 from config import OPPONENT
 
-def getFeyenoordKeywords():
-    with open("keywords-feyenoord.yaml", "r") as file:
-        return yaml.safe_load(file)
-
-def getOpponentKeywords():
-    with open("keywords-" + OPPONENT.lower() + ".yaml", "r") as file:
-        return yaml.safe_load(file)
-
-def getFeyenoordReplacements():
-    with open("replacements-feyenoord.yaml", "r") as file:
-        object = yaml.safe_load(file)
-        return [f"{key}:{value}" for key, value in object.items()]
-
-def getOpponentReplacements():
-    with open("replacements-" + OPPONENT.lower() + ".yaml", "r") as file:
-        object = yaml.safe_load(file)
-        return [f"{key}:{value}" for key, value in object.items()]
+def load_and_process_yaml(file_name):
+    with open(file_name, "r") as file:
+        data = yaml.safe_load(file)
+    return [f"{key}:{value}" for key, value in data.items()]
 
 def getKeywords():
-    return getFeyenoordKeywords() + getOpponentKeywords()
+    feyenoord_keywords = load_and_process_yaml("keywords-feyenoord.yaml")
+    opponent_keywords = load_and_process_yaml(f"keywords-{OPPONENT.lower()}.yaml")
+    return feyenoord_keywords + opponent_keywords
 
 def getReplacements():
-    return getFeyenoordReplacements() + getOpponentReplacements()
+    feyenoord_replacements = load_and_process_yaml("replacements-feyenoord.yaml")
+    opponent_replacements = load_and_process_yaml(f"replacements-{OPPONENT.lower()}.yaml")
+    return feyenoord_replacements + opponent_replacements

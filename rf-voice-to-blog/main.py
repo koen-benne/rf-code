@@ -47,7 +47,6 @@ def main():
                     completeTranscription()
                     return
                 completed = False
-            print(sentence)
             currentTranscription.append(sentence)
 
         # Event handler for receiving metadata from deepgram

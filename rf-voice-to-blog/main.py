@@ -6,6 +6,8 @@ import pyaudio
 import yaml
 from blogger import writeBlog, writeBlogGPT
 
+OPPONENT = "Ajax"
+
 from deepgram import (
     DeepgramClient,
     LiveTranscriptionEvents,
@@ -45,7 +47,6 @@ def main():
                 return
             completed = False
             currentTranscription.append(sentence)
-            print(sentence)
 
         def on_metadata(self, metadata, **kwargs):
             print(f"\n\n{metadata}\n\n")
@@ -58,12 +59,21 @@ def main():
         dg_connection.on(LiveTranscriptionEvents.Metadata, on_metadata)
         dg_connection.on(LiveTranscriptionEvents.Error, on_error)
 
-        def getKeywords():
-            with open("keywords.yaml", "r") as file:
+        def getFeyenoordKeywords():
+            with open("keywords-feyenoord.yaml", "r") as file:
                 return yaml.safe_load(file)
 
-        def getReplacements():
-            with open("replacements.yaml", "r") as file:
+        def getOpponentKeywords():
+            with open("keywords-" + OPPONENT.lower() + ".yaml", "r") as file:
+                return yaml.safe_load(file)
+
+        def getFeyenoordReplacements():
+            with open("replacements-feyenoord.yaml", "r") as file:
+                object = yaml.safe_load(file)
+                return [f"{key}:{value}" for key, value in object.items()]
+
+        def getOpponentReplacements():
+            with open("replacements-" + OPPONENT.lower() + ".yaml", "r") as file:
                 object = yaml.safe_load(file)
                 return [f"{key}:{value}" for key, value in object.items()]
 
@@ -76,8 +86,8 @@ def main():
             sample_rate=44100,
             channels=1,
             smart_format=True,
-            keywords=getKeywords(),
-            replace=getReplacements(),
+            keywords=getFeyenoordKeywords() + getOpponentKeywords(),
+            replace=getFeyenoordReplacements() + getOpponentReplacements(),
         )
 
         # STEP 6: Start the connection

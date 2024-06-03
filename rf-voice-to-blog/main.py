@@ -1,7 +1,7 @@
 import threading
 from blogger import writeBlog, writeBlogGPT
 from threads import streamThread
-from config import API_KEY
+from config import API_KEY, MIN_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION
 from getData import getKeywords, getReplacements
 
 from deepgram import (
@@ -22,8 +22,12 @@ def main():
         completed = False
 
         def completeTranscription():
+            if currentTranscription == []:
+                return
             transcription = " ".join(currentTranscription)
-            print(transcription)
+            currentTranscription.clear()
+            if len(transcription.split()) < MIN_TRANSCRIPT_LENGTH:
+                return
             blogThread = threading.Thread(target=writeBlogGPT, args=(transcription,))
             blogThread.start()
 
@@ -31,13 +35,19 @@ def main():
         def on_message(self, result, **kwargs):
             nonlocal completed
             sentence = result.channel.alternatives[0].transcript
-            if len(sentence) == 0:
-                if completed:
+
+            # If the DEBUG_TRANSCRIPTION flag is set to True, print the transcription and don't write the blog
+            if DEBUG_TRANSCRIPTION:
+                print(f"Transcription: {sentence}")
+            else:
+                if len(sentence) == 0:
+                    if completed:
+                        return
+                    completed = True
+                    completeTranscription()
                     return
-                completed = True
-                completeTranscription()
-                return
-            completed = False
+                completed = False
+            print(sentence)
             currentTranscription.append(sentence)
 
         # Event handler for receiving metadata from deepgram

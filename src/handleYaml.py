@@ -25,11 +25,11 @@ def processTranscriptionFiles(file_name):
     return [f"{key}:{value}" for key, value in data.items()]
 
 def getKeywords():
-    feyenoord_keywords = processTranscriptionFiles("keywords-feyenoord.yaml")
-    opponent_keywords = processTranscriptionFiles(f"keywords-{OPPONENT.lower()}.yaml")
+    feyenoord_keywords = processTranscriptionFiles("transcription-configs/keywords-feyenoord.yaml")
+    opponent_keywords = processTranscriptionFiles(f"transcription-configs/keywords-{OPPONENT.lower()}.yaml")
     return feyenoord_keywords + opponent_keywords
 
 def getReplacements():
-    feyenoord_replacements = processTranscriptionFiles("replacements-feyenoord.yaml")
-    opponent_replacements = processTranscriptionFiles(f"replacements-{OPPONENT.lower()}.yaml")
+    feyenoord_replacements = processTranscriptionFiles("transcription-configs/replacements-feyenoord.yaml")
+    opponent_replacements = processTranscriptionFiles(f"transcription-configs/replacements-{OPPONENT.lower()}.yaml")
     return feyenoord_replacements + opponent_replacements

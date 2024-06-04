@@ -16,4 +16,4 @@ OPPONENT = "Ajax"
 API_KEY = os.getenv("DEEPGRAM_API_KEY")
 MIN_TRANSCRIPT_LENGTH = 6
 DEBUG_TRANSCRIPTION = False
-OUTPUT_FILE_NAME = "feyenoord-" + OPPONENT + "-" + str(datetime.today()) +".yaml"
+OUTPUT_FILE_NAME = "Feyenoord-" + OPPONENT + "-" + str(datetime.today()) +".yaml"

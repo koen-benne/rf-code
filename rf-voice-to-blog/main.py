@@ -1,8 +1,8 @@
 import threading
-from blogger import writeBlog, writeBlogGPT
+from blogger import writeBlog
 from threads import streamThread
 from config import API_KEY, MIN_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION
-from getData import getKeywords, getReplacements
+from handleYaml import getKeywords, getReplacements
 
 from deepgram import (
     DeepgramClient,
@@ -28,7 +28,7 @@ def main():
             currentTranscription.clear()
             if len(transcription.split()) < MIN_TRANSCRIPT_LENGTH:
                 return
-            blogThread = threading.Thread(target=writeBlogGPT, args=(transcription,))
+            blogThread = threading.Thread(target=writeBlog, args=(transcription,))
             blogThread.start()
 
         # Event handler for receiving messages from deepgram

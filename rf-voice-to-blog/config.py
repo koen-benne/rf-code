@@ -1,5 +1,6 @@
 import pyaudio
 import os
+from datetime import datetime
 
 CHANNELS = 1
 FRAME_RATE = 44100
@@ -15,3 +16,4 @@ OPPONENT = "Ajax"
 API_KEY = os.getenv("DEEPGRAM_API_KEY")
 MIN_TRANSCRIPT_LENGTH = 6
 DEBUG_TRANSCRIPTION = False
+OUTPUT_FILE_NAME = "feyenoord-" + OPPONENT + "-" + str(datetime.today()) +".yaml"

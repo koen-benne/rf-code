@@ -4,7 +4,7 @@ from config import OPPONENT, OUTPUT_FILE_NAME
 import datetime
 from handleYaml import addEntry
 
-def writeBlog(transcription):
+def writeSummary(transcription):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     def promptGpt3_5(prompt):

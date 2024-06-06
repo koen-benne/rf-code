@@ -1,14 +1,15 @@
 import pyaudio
 import subprocess
 from contextlib import contextmanager
-from config import CHANNELS, FRAME_RATE, AUDIO_FORMAT
+from .config import CHANNELS, FRAME_RATE, AUDIO_FORMAT
 
-def setup_audio_stream():
+def setup_audio_stream(output_index):
     p = pyaudio.PyAudio()
     stream = p.open(format=AUDIO_FORMAT,
                     channels=CHANNELS,
                     rate=FRAME_RATE,
-                    output=True)
+                    output=True,
+                    output_device_index=output_index)
     return stream, p
 
 def close_audio_stream(stream, p):
@@ -31,3 +32,4 @@ def setup_ffmpeg_process(path):
     finally:
         process.stdout.close()
         process.wait()
+

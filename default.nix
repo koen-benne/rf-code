@@ -3,9 +3,16 @@
   config,
   lib,
   ...
-}: {
+}: let
+  pyproject = lib.importTOML ./blogger/pyproject.toml;
+  buildWithSetuptools = {
+    buildPythonPackage.format = "pyproject";
+    mkDerivation.buildInputs = [config.deps.python.pkgs.setuptools config.deps.python.pkgs.setuptools-scm];
+  };
+in {
   imports = [
-    dream2nix.modules.dream2nix.WIP-python-pyproject
+    dream2nix.modules.dream2nix.pip
+    buildWithSetuptools
   ];
 
   deps = {nixpkgs, ...}: {
@@ -15,25 +22,42 @@
     flac = nixpkgs.flac;
   };
 
+  inherit (pyproject.project) name version;
+
   mkDerivation = {
-    src = ./.;
+    src = lib.concatStringsSep "/" [
+      config.paths.projectRoot
+      config.paths.package
+      "blogger"
+    ];
     nativeBuildInputs = [config.deps.ffmpeg config.deps.flac];
   };
 
-  # This is not strictly required, but setting it will keep most dependencies
-  #   locked, even when new dependencies are added via pyproject.toml
-  pip.pypiSnapshotDate = "2024-05-05";
+  buildPythonPackage.pythonImportsCheck = [
+    "summarizer"
+  ];
 
-  pip.overrides.pyaudio = {
-    env.autoPatchelfIgnoreMissingDeps = true;
-    mkDerivation.buildInputs = [
-      config.deps.portaudio
+  pip = {
+    pypiSnapshotDate = "2024-05-05";
+    requirementsList = [
+      "${config.paths.package}/blogger"
+      "${config.paths.package}/summarizer"
     ];
-  };
-  pip.overrides.ffmpeg-audio = {
-    env.autoPatchelfIgnoreMissingDeps = true;
-    mkDerivation.buildInputs = [
-      config.deps.ffmpeg
-    ];
+
+    overrides = {
+      pyaudio = {
+        env.autoPatchelfIgnoreMissingDeps = true;
+        mkDerivation.buildInputs = [
+          config.deps.portaudio
+        ];
+      };
+      ffmpeg-audio = {
+        env.autoPatchelfIgnoreMissingDeps = true;
+        mkDerivation.buildInputs = [
+          config.deps.ffmpeg
+        ];
+      };
+      summarizer = buildWithSetuptools;
+    };
   };
 }

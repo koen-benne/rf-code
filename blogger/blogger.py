@@ -1,7 +1,7 @@
 from summarizer import start, stop
 import yaml
 import pyaudio
-import date
+from datetime import datetime
 
 OPPONENT = "Ajax"
 
@@ -15,16 +15,17 @@ def loadYaml(file_path):
     except FileNotFoundError:
         return []
 
-def addEntry(entry, file):
-    data = loadYaml(file)
+def addEntry(entry):
+    file_name = f"feyenoord-{OPPONENT.lower()}_{datetime.now().strftime('%Y-%m-%d')}.yaml"
+    data = loadYaml(file_name)
 
     data.append(entry)
 
-    with open(file, 'w') as file:
+    with open(file_name, 'w') as file:
         yaml.dump(data, file, default_flow_style=False)
 
 def on_output(output):
-    addEntry(output, f"feyenoord-{OPPONENT}.yaml")
+    addEntry(output)
 
 def main():
     p = pyaudio.PyAudio()

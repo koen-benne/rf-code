@@ -1,1 +1,1 @@
-opponent = None
+opponent = ""

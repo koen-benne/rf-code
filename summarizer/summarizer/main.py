@@ -9,6 +9,7 @@ from .writer import writeSummary
 from .threads import streamThread
 from .config import API_KEY, MIN_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION, DEFAULT_AUDIO_PATH
 from .handleYaml import getKeywords, getReplacements
+from .state import opponent
 
 deepgram = None
 dg_connection = None
@@ -57,10 +58,11 @@ def on_error(self, error, **kwargs):
     print(f"\n\n{error}\n\n")
 
 
-def start(output_callback: Callable[[str], None], audio_path: str = DEFAULT_AUDIO_PATH, output_index: Optional[int] = None):
-    global deepgram, dg_connection, exit, lock_exit, thread, on_output
+def start(opponent_name: str, output_callback: Callable[[str], None], audio_path: str = DEFAULT_AUDIO_PATH, output_index: Optional[int] = None):
+    global deepgram, dg_connection, exit, lock_exit, thread, on_output, opponent
 
     on_output = output_callback
+    opponent = opponent_name
 
     deepgram = DeepgramClient(API_KEY)
     dg_connection = deepgram.listen.live.v("1")

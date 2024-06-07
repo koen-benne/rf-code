@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: summarizer
+Version: 0.1.0
+Summary: A python package that uses live Dutch Feyenoord football commentary stream audio to write incremental summaries of the ongoing match.
+Author-email: Koen Benne <koen.benne@iodigital.com>
+Requires-Dist: PyAudio==0.2.14
+Requires-Dist: cffi==1.16.0
+Requires-Dist: deepgram-sdk==3.2.7
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: openai==1.25.1

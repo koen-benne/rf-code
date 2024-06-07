@@ -9,6 +9,7 @@ authors = [{ name = "Koen Benne", email = "koen.benne@iodigital.com" }]
 
 dependencies = [
   "summarizer",
-  "PyAudio"
+  "PyAudio",
+  "pyyaml"
 ]
 

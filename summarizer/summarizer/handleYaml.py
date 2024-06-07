@@ -1,6 +1,6 @@
 import yaml
 import os
-from .config import OPPONENT
+from .state import opponent
 
 package_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,11 +30,11 @@ def processTranscriptionFiles(file_name):
 
 def getKeywords():
     feyenoord_keywords = processTranscriptionFiles(os.path.join(package_dir, "transcription-configs/keywords-feyenoord.yaml"))
-    opponent_keywords = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/keywords-{OPPONENT.lower()}.yaml"))
+    opponent_keywords = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/keywords-{opponent.lower()}.yaml"))
     return feyenoord_keywords + opponent_keywords
 
 def getReplacements():
     feyenoord_replacements = processTranscriptionFiles(os.path.join(package_dir, "transcription-configs/replacements-feyenoord.yaml"))
-    opponent_replacements = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/replacements-{OPPONENT.lower()}.yaml"))
+    opponent_replacements = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/replacements-{opponent.lower()}.yaml"))
     return feyenoord_replacements + opponent_replacements
 

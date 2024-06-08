@@ -1,11 +1,21 @@
-from summarizer import start, stop
 import yaml
 import pyaudio
+import asyncio
 from datetime import datetime
+from fastapi import FastAPI, WebSocket
+
+from summarizer import start as start_summarizer, stop as stop_summarizer
+
+app = FastAPI()
 
 OPPONENT = "Ajax"
+SUMMARIZER_RUNNING = False
+FILE_NAME_FORMAT = "feyenoord-{opponent_lower}_{date}.yaml"
 
-def loadYaml(file_path):
+websocket_clients = set()
+
+
+def load_yaml(file_path):
     try:
         with open(file_path, 'r') as file:
             data = yaml.safe_load(file)
@@ -15,25 +25,62 @@ def loadYaml(file_path):
     except FileNotFoundError:
         return []
 
-def addEntry(entry):
-    file_name = f"feyenoord-{OPPONENT.lower()}_{datetime.now().strftime('%Y-%m-%d')}.yaml"
-    data = loadYaml(file_name)
+
+def add_entry(entry):
+    file_name = FILE_NAME_FORMAT.format(
+        opponent_lower=OPPONENT.lower(),
+        date=datetime.now().strftime('%Y-%m-%d')
+    )
+    data = load_yaml(file_name)
 
     data.append(entry)
 
     with open(file_name, 'w') as file:
         yaml.dump(data, file, default_flow_style=False)
 
-def on_output(output):
-    addEntry(output)
 
-def main():
-    p = pyaudio.PyAudio()
-    index = p.get_default_output_device_info().get('index')
-    start(OPPONENT, on_output, "audio.mp3", index)
-    input("Press Enter to stop the program...")
-    stop()
+def on_output(output):
+    add_entry(output)
+    if websocket_clients:
+        for client in websocket_clients:
+            client.send_text(output)
+
+
+@app.post("/start")
+async def start_summarizer_endpoint():
+    global SUMMARIZER_RUNNING
+    if not SUMMARIZER_RUNNING:
+        p = pyaudio.PyAudio()
+        index = p.get_default_output_device_info().get('index')
+        SUMMARIZER_RUNNING = True
+        start_summarizer(OPPONENT, on_output, "audio.mp3", index)
+        return {"message": "Summarizer started"}
+    else:
+        return {"message": "Summarizer is already running"}
+
+
+@app.post("/stop")
+async def stop_summarizer_endpoint():
+    global SUMMARIZER_RUNNING
+    if SUMMARIZER_RUNNING:
+        stop_summarizer()
+        SUMMARIZER_RUNNING = False
+    else:
+        return {"message": "Summarizer is not running"}
+
+
+@app.websocket("/updates")
+async def updates_websocket(websocket: WebSocket):
+    await websocket.accept()
+    websocket_clients.add(websocket)
+    try:
+        while True:
+            await asyncio.sleep(1)  # Adjust the sleep time as needed
+    finally:
+        websocket_clients.remove(websocket)
 
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+

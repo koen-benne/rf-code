@@ -1,2 +1,5 @@
 summarizer
 PyAudio
+pyyaml
+fastapi
+uvicorn

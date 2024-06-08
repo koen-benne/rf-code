@@ -63,6 +63,13 @@
         "url": "https://files.pythonhosted.org/packages/9b/89/a31c81e36bbb793581d8bba4406a8aac4ba84b2559301c44eef81f4cf5df/cffi-1.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
         "version": "1.16.0"
       },
+      "click": {
+        "is_direct": false,
+        "sha256": "ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/00/2e/d53fa4befbf2cfa713304affc7ca780ce4fc1fd8710527771b58311a3229/click-8.1.7-py3-none-any.whl",
+        "version": "8.1.7"
+      },
       "dataclasses-json": {
         "is_direct": false,
         "sha256": "f49c77aa3a85cac5bf5b7f65f4790ca0d2be8ef4d92c75e91ba0103072788a39",
@@ -83,6 +90,34 @@
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl",
         "version": "1.9.0"
+      },
+      "dnspython": {
+        "is_direct": false,
+        "sha256": "5ef3b9680161f6fa89daf8ad451b5f1a33b18ae8a1c6778cdf4b43f08c0a6e50",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/87/a1/8c5287991ddb8d3e4662f71356d9656d91ab3a36618c3dd11b280df0d255/dnspython-2.6.1-py3-none-any.whl",
+        "version": "2.6.1"
+      },
+      "email-validator": {
+        "is_direct": false,
+        "sha256": "97d882d174e2a65732fb43bfce81a3a834cbc1bde8bf419e30ef5ea976370a05",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/e4/60/b02cb0f5ee0be88bd4fbfdd9cc91e43ec2dfcc47fe064e7c70587ff58a94/email_validator-2.1.1-py3-none-any.whl",
+        "version": "2.1.1"
+      },
+      "fastapi": {
+        "is_direct": false,
+        "sha256": "97ecbf994be0bcbdadedf88c3150252bed7b2087075ac99735403b1b76cc8fc0",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/e6/33/de41e554e5a187d583906e10d53bfae5fd6c07e98cbf4fe5262bd37e739a/fastapi-0.111.0-py3-none-any.whl",
+        "version": "0.111.0"
+      },
+      "fastapi-cli": {
+        "is_direct": false,
+        "sha256": "d7a8ec89fd52ad16c52de9fe7299e4b22c7a32e1bf28aa886e5517e4927423dd",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/fd/2f/c43116ad92f8310960e22b0789efbf10015c5a3c8bcbae03beb861bfa006/fastapi_cli-0.0.2-py3-none-any.whl",
+        "version": "0.0.2"
       },
       "frozenlist": {
         "is_direct": false,
@@ -105,6 +140,13 @@
         "url": "https://files.pythonhosted.org/packages/78/d4/e5d7e4f2174f8a4d63c8897d79eb8fe2503f7ecc03282fee1fa2719c2704/httpcore-1.0.5-py3-none-any.whl",
         "version": "1.0.5"
       },
+      "httptools": {
+        "is_direct": false,
+        "sha256": "7d9ceb2c957320def533671fc9c715a80c47025139c8d1f3797477decbc6edd2",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/59/23/047a89e66045232fb82c50ae57699e40f70e073ae5ccd53f54e532fbd2a2/httptools-0.6.1-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "0.6.1"
+      },
       "httpx": {
         "is_direct": false,
         "sha256": "71d5465162c13681bff01ad59b2cc68dd838ea1f10e51574bac27103f00c91a5",
@@ -119,12 +161,40 @@
         "url": "https://files.pythonhosted.org/packages/e5/3e/741d8c82801c347547f8a2a06aa57dbb1992be9e948df2ea0eda2c8b79e8/idna-3.7-py3-none-any.whl",
         "version": "3.7"
       },
+      "jinja2": {
+        "is_direct": false,
+        "sha256": "7d6d50dd97d52cbc355597bd845fabfbac3f551e1f99619e39a35ce8c370b5fa",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/30/6d/6de6be2d02603ab56e72997708809e8a5b0fbfee080735109b40a3564843/Jinja2-3.1.3-py3-none-any.whl",
+        "version": "3.1.3"
+      },
+      "markdown-it-py": {
+        "is_direct": false,
+        "sha256": "355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/42/d7/1ec15b46af6af88f19b8e5ffea08fa375d433c998b8a7639e76935c14f1f/markdown_it_py-3.0.0-py3-none-any.whl",
+        "version": "3.0.0"
+      },
+      "markupsafe": {
+        "is_direct": false,
+        "sha256": "b91c037585eba9095565a3556f611e3cbfaa42ca1e865f7b8015fe5c7336d5a5",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/97/18/c30da5e7a0e7f4603abfc6780574131221d9148f323752c2755d48abad30/MarkupSafe-2.1.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "2.1.5"
+      },
       "marshmallow": {
         "is_direct": false,
         "sha256": "70b54a6282f4704d12c0a41599682c5c5450e843b9ec406308653b47c59648a1",
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/be/24/cbb242420021a79c87768dcd22ce028f48ef40913239ad6106c8a557f52c/marshmallow-3.21.2-py3-none-any.whl",
         "version": "3.21.2"
+      },
+      "mdurl": {
+        "is_direct": false,
+        "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl",
+        "version": "0.1.2"
       },
       "multidict": {
         "is_direct": false,
@@ -146,6 +216,13 @@
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/e6/4e/9e9db238574aeb280377813ac2085c0df3e163d113d3a622039855a3de90/openai-1.25.1-py3-none-any.whl",
         "version": "1.25.1"
+      },
+      "orjson": {
+        "is_direct": false,
+        "sha256": "9a7bc9e8bc11bac40f905640acd41cbeaa87209e7e1f57ade386da658092dc16",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/0b/ad/6eaf1425afc6d57a8f492264835f22618ae3d635238ccc06be1672cdf18b/orjson-3.10.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "3.10.3"
       },
       "packaging": {
         "is_direct": false,
@@ -182,6 +259,27 @@
         "url": "https://files.pythonhosted.org/packages/80/b8/b93d756b36425f7ad378dcb9fdf5f6a03b88afaae0476f7bdb31dd8964be/pydantic_core-2.18.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
         "version": "2.18.2"
       },
+      "pygments": {
+        "is_direct": false,
+        "sha256": "b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/f7/3f/01c8b82017c199075f8f788d0d906b9ffbbc5a47dc9918a945e13d5a2bda/pygments-2.18.0-py3-none-any.whl",
+        "version": "2.18.0"
+      },
+      "python-dotenv": {
+        "is_direct": false,
+        "sha256": "f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/6a/3e/b68c118422ec867fa7ab88444e1274aa40681c606d59ac27de5a5588f082/python_dotenv-1.0.1-py3-none-any.whl",
+        "version": "1.0.1"
+      },
+      "python-multipart": {
+        "is_direct": false,
+        "sha256": "97ca7b8ea7b05f977dc3849c3ba99d51689822fab725c3703af7c866a0c2b215",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/3d/47/444768600d9e0ebc82f8e347775d24aef8f6348cf00e9fa0e81910814e6d/python_multipart-0.0.9-py3-none-any.whl",
+        "version": "0.0.9"
+      },
       "pyyaml": {
         "is_direct": false,
         "sha256": "d2b04aac4d386b172d5b9692e2d2da8de7bfb6c387fa4f801fbf6fb2e6ba4673",
@@ -189,12 +287,33 @@
         "url": "https://files.pythonhosted.org/packages/7b/5e/efd033ab7199a0b2044dab3b9f7a4f6670e6a52c089de572e928d2873b06/PyYAML-6.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
         "version": "6.0.1"
       },
+      "rich": {
+        "is_direct": false,
+        "sha256": "4edbae314f59eb482f54e9e30bf00d33350aaa94f4bfcd4e9e3110e64d0d7222",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/87/67/a37f6214d0e9fe57f6ae54b2956d550ca8365857f42a1ce0392bb21d9410/rich-13.7.1-py3-none-any.whl",
+        "version": "13.7.1"
+      },
+      "shellingham": {
+        "is_direct": false,
+        "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl",
+        "version": "1.5.4"
+      },
       "sniffio": {
         "is_direct": false,
         "sha256": "2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2",
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl",
         "version": "1.3.1"
+      },
+      "starlette": {
+        "is_direct": false,
+        "sha256": "6fe59f29268538e5d0d182f2791a479a0c64638e6935d1c6989e63fb2699c6ee",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/fd/18/31fa32ed6c68ba66220204ef0be798c349d0a20c1901f9d4a794e08c76d8/starlette-0.37.2-py3-none-any.whl",
+        "version": "0.37.2"
       },
       "summarizer": {
         "is_direct": true,
@@ -208,6 +327,13 @@
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/18/eb/fdb7eb9e48b7b02554e1664afd3bd3f117f6b6d6c5881438a0b055554f9b/tqdm-4.66.4-py3-none-any.whl",
         "version": "4.66.4"
+      },
+      "typer": {
+        "is_direct": false,
+        "sha256": "070d7ca53f785acbccba8e7d28b08dcd88f79f1fbda035ade0aecec71ca5c914",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/20/b5/11cf2e34fbb11b937e006286ab5b8cfd334fde1c8fa4dd7f491226931180/typer-0.12.3-py3-none-any.whl",
+        "version": "0.12.3"
       },
       "typing-extensions": {
         "is_direct": false,
@@ -223,12 +349,40 @@
         "url": "https://files.pythonhosted.org/packages/65/f3/107a22063bf27bdccf2024833d3445f4eea42b2e598abfbd46f6a63b6cb0/typing_inspect-0.9.0-py3-none-any.whl",
         "version": "0.9.0"
       },
+      "ujson": {
+        "is_direct": false,
+        "sha256": "8ba7cac47dd65ff88571eceeff48bf30ed5eb9c67b34b88cb22869b7aa19600d",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/d3/93/de6fff3ae06351f3b1c372f675fe69bc180f93d237c9e496c05802173dd6/ujson-5.9.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "5.9.0"
+      },
+      "uvicorn": {
+        "is_direct": false,
+        "sha256": "2c2aac7ff4f4365c206fd773a39bf4ebd1047c238f8b8268ad996829323473de",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/73/f5/cbb16fcbe277c1e0b8b3ddd188f2df0e0947f545c49119b589643632d156/uvicorn-0.29.0-py3-none-any.whl",
+        "version": "0.29.0"
+      },
+      "uvloop": {
+        "is_direct": false,
+        "sha256": "5138821e40b0c3e6c9478643b4660bd44372ae1e16a322b8fc07478f92684e24",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/86/cc/1829b3f740e4cb1baefff8240a1c6fc8db9e3caac7b93169aec7d4386069/uvloop-0.19.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "0.19.0"
+      },
       "verboselogs": {
         "is_direct": false,
         "sha256": "d63f23bf568295b95d3530c6864a0b580cec70e7ff974177dead1e4ffbc6ff49",
         "type": "url",
         "url": "https://files.pythonhosted.org/packages/b8/9d/c5c3cb0093642042fd604b53928ac65e7650fdc5a8a97814288e29beab84/verboselogs-1.7-py2.py3-none-any.whl",
         "version": "1.7"
+      },
+      "watchfiles": {
+        "is_direct": false,
+        "sha256": "9c873345680c1b87f1e09e0eaf8cf6c891b9851d8b4d3645e7efe2ec20a20cc7",
+        "type": "url",
+        "url": "https://files.pythonhosted.org/packages/35/e0/e8a9c1fe30e98c5b3507ad381abc4d9ee2c3b9c0ae62ffe9c164a5838186/watchfiles-0.21.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "version": "0.21.0"
       },
       "websockets": {
         "is_direct": false,
@@ -265,13 +419,17 @@
         ],
         "attrs": [],
         "blogger": [
+          "fastapi",
           "pyaudio",
-          "summarizer"
+          "pyyaml",
+          "summarizer",
+          "uvicorn"
         ],
         "certifi": [],
         "cffi": [
           "pycparser"
         ],
+        "click": [],
         "dataclasses-json": [
           "marshmallow",
           "typing-inspect"
@@ -286,12 +444,35 @@
           "websockets"
         ],
         "distro": [],
+        "dnspython": [],
+        "email-validator": [
+          "dnspython",
+          "idna"
+        ],
+        "fastapi": [
+          "email-validator",
+          "fastapi-cli",
+          "httpx",
+          "jinja2",
+          "orjson",
+          "pydantic",
+          "python-multipart",
+          "starlette",
+          "typing-extensions",
+          "ujson",
+          "uvicorn"
+        ],
+        "fastapi-cli": [
+          "typer",
+          "uvicorn"
+        ],
         "frozenlist": [],
         "h11": [],
         "httpcore": [
           "certifi",
           "h11"
         ],
+        "httptools": [],
         "httpx": [
           "anyio",
           "certifi",
@@ -300,9 +481,17 @@
           "sniffio"
         ],
         "idna": [],
+        "jinja2": [
+          "markupsafe"
+        ],
+        "markdown-it-py": [
+          "mdurl"
+        ],
+        "markupsafe": [],
         "marshmallow": [
           "packaging"
         ],
+        "mdurl": [],
         "multidict": [],
         "mypy-extensions": [],
         "openai": [
@@ -314,6 +503,7 @@
           "tqdm",
           "typing-extensions"
         ],
+        "orjson": [],
         "packaging": [],
         "pyaudio": [],
         "pycparser": [],
@@ -325,8 +515,19 @@
         "pydantic-core": [
           "typing-extensions"
         ],
+        "pygments": [],
+        "python-dotenv": [],
+        "python-multipart": [],
         "pyyaml": [],
+        "rich": [
+          "markdown-it-py",
+          "pygments"
+        ],
+        "shellingham": [],
         "sniffio": [],
+        "starlette": [
+          "anyio"
+        ],
         "summarizer": [
           "cffi",
           "deepgram-sdk",
@@ -335,12 +536,33 @@
           "pyyaml"
         ],
         "tqdm": [],
+        "typer": [
+          "click",
+          "rich",
+          "shellingham",
+          "typing-extensions"
+        ],
         "typing-extensions": [],
         "typing-inspect": [
           "mypy-extensions",
           "typing-extensions"
         ],
+        "ujson": [],
+        "uvicorn": [
+          "click",
+          "h11",
+          "httptools",
+          "python-dotenv",
+          "pyyaml",
+          "uvloop",
+          "watchfiles",
+          "websockets"
+        ],
+        "uvloop": [],
         "verboselogs": [],
+        "watchfiles": [
+          "anyio"
+        ],
         "websockets": [],
         "yarl": [
           "idna",

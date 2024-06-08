@@ -2,7 +2,7 @@ import time
 from .audio import setup_audio_stream, close_audio_stream, setup_ffmpeg_process
 from .config import FRAME_RATE
 
-def streamThread(dg_connection, lock_exit, exit, audio_path, output_index):
+def streamThread(dg_connection, audio_path, output_index):
     stream, p = None, None
     if output_index:
         stream, p = setup_audio_stream(output_index) # Open an audio stream if we want to write the audio to output
@@ -13,10 +13,11 @@ def streamThread(dg_connection, lock_exit, exit, audio_path, output_index):
 
     try:
         for data in data_source(audio_path):
-            lock_exit.acquire()
-            if exit:
-                break
-            lock_exit.release()
+            from .state import lock_exit, exit
+
+            with lock_exit:
+                if exit:
+                    break
 
             dg_connection.send(data)  # Send raw PCM data
             if stream:

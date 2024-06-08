@@ -9,27 +9,26 @@ from .writer import writeSummary
 from .threads import streamThread
 from .config import API_KEY, MIN_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION, DEFAULT_AUDIO_PATH
 from .handleYaml import getKeywords, getReplacements
-from .state import opponent
+from .state import opponent, lock_exit, exit_threads
 
 deepgram = None
 dg_connection = None
 currentTranscription = []
 completed = False
-lock_exit = threading.Lock()
-exit = False
-thread = None
+transcription_thread = None
+summarizer_thread = None
 on_output = None
 
 def completeTranscription():
-    global currentTranscription
+    global currentTranscription, summarizer_thread, on_output
     if currentTranscription == []:
         return
     transcription = " ".join(currentTranscription)
     currentTranscription.clear()
     if len(transcription.split()) < MIN_TRANSCRIPT_LENGTH:
         return
-    blogThread = threading.Thread(target=writeSummary, args=(transcription, on_output))
-    blogThread.start()
+    summarizer_thread = threading.Thread(target=writeSummary, args=(transcription, on_output))
+    summarizer_thread.start()
 
 # Event handler for receiving messages from deepgram
 def on_message(self, result, **kwargs):
@@ -59,7 +58,7 @@ def on_error(self, error, **kwargs):
 
 
 def start(opponent_name: str, output_callback: Callable[[str], None], audio_path: str = DEFAULT_AUDIO_PATH, output_index: Optional[int] = None):
-    global deepgram, dg_connection, exit, lock_exit, thread, on_output, opponent
+    global deepgram, dg_connection, exit, lock_exit, transcription_thread, on_output, opponent
 
     on_output = output_callback
     opponent = opponent_name
@@ -87,21 +86,20 @@ def start(opponent_name: str, output_callback: Callable[[str], None], audio_path
     dg_connection.start(options)
 
     # Start audio stream thread
-    thread = threading.Thread(target=streamThread, args=(dg_connection, lock_exit, exit, audio_path, output_index))
-    thread.start()
+    transcription_thread = threading.Thread(target=streamThread, args=(dg_connection, audio_path, output_index))
+    transcription_thread.start()
 
 def stop():
-    global exit
-    lock_exit.acquire()
-    exit = True
-    lock_exit.release()
+    with lock_exit:
+        exit_threads()
 
     print("Stopping...")
 
-    thread.join()
+    if transcription_thread is not None:
+        transcription_thread.join()
+    if summarizer_thread is not None:
+        summarizer_thread.join()
     dg_connection.finish()
 
     print("Finished")
-
-
 

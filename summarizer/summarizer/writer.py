@@ -42,4 +42,5 @@ def writeSummary(transcription, on_output):
         # )
 
         on_output(output)
+        client.close()
 

@@ -5,6 +5,7 @@ summarizer/audio.py
 summarizer/config.py
 summarizer/handleYaml.py
 summarizer/main.py
+summarizer/state.py
 summarizer/threads.py
 summarizer/writer.py
 summarizer.egg-info/PKG-INFO

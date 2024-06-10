@@ -2,7 +2,8 @@ import yaml
 import pyaudio
 import asyncio
 from datetime import datetime
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from typing import Set
 
 from summarizer import start as start_summarizer, stop as stop_summarizer
 
@@ -12,7 +13,8 @@ OPPONENT = "Ajax"
 SUMMARIZER_RUNNING = False
 FILE_NAME_FORMAT = "feyenoord-{opponent_lower}_{date}.yaml"
 
-websocket_clients = set()
+websocket_clients: Set[WebSocket] = set()
+event_loop = asyncio.get_event_loop()
 
 
 def load_yaml(file_path):
@@ -39,12 +41,21 @@ def add_entry(entry):
         yaml.dump(data, file, default_flow_style=False)
 
 
+async def send_output(client: WebSocket, output: dict):
+    try:
+        await client.send_json(output)
+    except WebSocketDisconnect:
+        websocket_clients.remove(client)
+    except Exception as e:
+        client.send_text(f"Error sending JSON: {e}")
+
 def on_output(output):
     add_entry(output)
     if websocket_clients:
+        print("Sending JSON")
         for client in websocket_clients:
-            client.send_text(output)
-
+            # asyncio.run_coroutine_threadsafe(send_output(client, output), event_loop)
+            asyncio.run(send_output(client, output))
 
 @app.post("/start")
 async def start_summarizer_endpoint():
@@ -76,9 +87,10 @@ async def updates_websocket(websocket: WebSocket):
     try:
         while True:
             await asyncio.sleep(1)  # Adjust the sleep time as needed
+    except WebSocketDisconnect:
+        websocket_clients.remove(websocket)
     finally:
         websocket_clients.remove(websocket)
-
 
 if __name__ == "__main__":
     import uvicorn

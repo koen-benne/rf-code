@@ -33,6 +33,11 @@ in {
       "blogger"
     ];
     nativeBuildInputs = [config.deps.ffmpeg config.deps.flac config.deps.curl config.deps.wget];
+    propagatedBuildInputs = [
+      config.deps.ffmpeg
+      config.deps.curl
+      config.deps.wget
+    ];
   };
 
   buildPythonPackage.pythonImportsCheck = [

@@ -20,8 +20,6 @@ PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 websocket_clients: Set[WebSocket] = set()
 outputs = []
 
-
-
 def load_yaml(file_path):
     try:
         with open(file_path, 'r') as file:

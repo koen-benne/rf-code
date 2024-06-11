@@ -14,7 +14,7 @@ SUMMARIZER_RUNNING = False
 FILE_NAME_FORMAT = "feyenoord-{opponent_lower}_{date}.yaml"
 
 websocket_clients: Set[WebSocket] = set()
-event_loop = asyncio.get_event_loop()
+outputs = []
 
 
 def load_yaml(file_path):
@@ -50,7 +50,8 @@ async def send_output(client: WebSocket, output: dict):
         client.send_text(f"Error sending JSON: {e}")
 
 def on_output(output):
-    add_entry(output)
+    # add_entry(output)
+    outputs.append(output)
     if websocket_clients:
         print("Sending JSON")
         for client in websocket_clients:
@@ -69,6 +70,10 @@ async def start_summarizer_endpoint():
     else:
         return {"message": "Summarizer is already running"}
 
+
+@app.get("/results")
+async def get_results():
+    return outputs
 
 @app.post("/stop")
 async def stop_summarizer_endpoint():

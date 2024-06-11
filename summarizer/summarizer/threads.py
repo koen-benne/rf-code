@@ -1,4 +1,5 @@
 import time
+import os
 from .audio import setup_audio_stream, close_audio_stream, setup_ffmpeg_process
 from .config import FRAME_RATE
 
@@ -34,6 +35,11 @@ def streamThread(dg_connection, audio_path, output_index):
 
 def audio_stream_generator(path):
     # Generates blocks of audio data from the radio stream or audio file
+    if not path.startswith("http") and not path.startswith("rtmp"):
+        # check if the audio file exists
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"File not found: {path}")
+
     with setup_ffmpeg_process(path) as process:
         while True:
             data = process.stdout.read(1024)

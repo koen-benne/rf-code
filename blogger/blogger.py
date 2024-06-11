@@ -58,6 +58,11 @@ def on_output(output):
             # asyncio.run_coroutine_threadsafe(send_output(client, output), event_loop)
             asyncio.run(send_output(client, output))
 
+# Respond to health check, necessary for Coolify
+@app.get("/")
+async def health_check():
+    return {"status": "ok"}
+
 @app.post("/start")
 async def start_summarizer_endpoint():
     global SUMMARIZER_RUNNING
@@ -99,5 +104,5 @@ async def updates_websocket(websocket: WebSocket):
 
 def main():
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
 

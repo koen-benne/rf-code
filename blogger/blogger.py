@@ -104,5 +104,5 @@ async def updates_websocket(websocket: WebSocket):
 
 def main():
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=8888, log_level="info")
 

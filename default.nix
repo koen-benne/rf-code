@@ -20,6 +20,8 @@ in {
     portaudio = nixpkgs.portaudio;
     ffmpeg = nixpkgs.ffmpeg;
     flac = nixpkgs.flac;
+    curl = nixpkgs.curl;
+    wget = nixpkgs.wget;
   };
 
   inherit (pyproject.project) name version;
@@ -30,7 +32,7 @@ in {
       config.paths.package
       "blogger"
     ];
-    nativeBuildInputs = [config.deps.ffmpeg config.deps.flac];
+    nativeBuildInputs = [config.deps.ffmpeg config.deps.flac config.deps.curl config.deps.wget];
   };
 
   buildPythonPackage.pythonImportsCheck = [

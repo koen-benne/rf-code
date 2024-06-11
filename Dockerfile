@@ -19,9 +19,6 @@ RUN cp -R $(nix-store -qR result/) /tmp/nix-store-closure
 # but they're fully self-contained so we don't need Nix anymore.
 FROM alpine:latest
 
-# Install curl and wget
-RUN apk add --no-cache curl wget
-
 WORKDIR /app
 
 # Copy /nix/store

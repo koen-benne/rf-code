@@ -1,9 +1,0 @@
-Metadata-Version: 2.1
-Name: blogger
-Version: 0.1.0
-Author-email: Koen Benne <koen.benne@iodigital.com>
-Requires-Dist: summarizer
-Requires-Dist: PyAudio
-Requires-Dist: pyyaml
-Requires-Dist: fastapi
-Requires-Dist: uvicorn

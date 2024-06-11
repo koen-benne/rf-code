@@ -1,7 +1,0 @@
-blogger.py
-pyproject.toml
-blogger.egg-info/PKG-INFO
-blogger.egg-info/SOURCES.txt
-blogger.egg-info/dependency_links.txt
-blogger.egg-info/requires.txt
-blogger.egg-info/top_level.txt

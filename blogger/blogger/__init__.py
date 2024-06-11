@@ -1,3 +1,4 @@
+import os
 import yaml
 import pyaudio
 import asyncio
@@ -12,9 +13,13 @@ app = FastAPI()
 OPPONENT = "Ajax"
 SUMMARIZER_RUNNING = False
 FILE_NAME_FORMAT = "feyenoord-{opponent_lower}_{date}.yaml"
+OUTPUT_AUDIO = os.getenv("OUTPUT_AUDIO")
+USE_EXAMPLE_AUDIO = os.getenv("USE_EXAMPLE_AUDIO")
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 websocket_clients: Set[WebSocket] = set()
 outputs = []
+
 
 
 def load_yaml(file_path):
@@ -66,11 +71,17 @@ async def health_check():
 @app.post("/start")
 async def start_summarizer_endpoint():
     global SUMMARIZER_RUNNING
+
+    audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
+
     if not SUMMARIZER_RUNNING:
-        p = pyaudio.PyAudio()
-        index = p.get_default_output_device_info().get('index')
+        if OUTPUT_AUDIO:
+            p = pyaudio.PyAudio()
+            index = p.get_default_output_device_info().get('index')
+            start_summarizer(OPPONENT, on_output, audio, index)
+        else:
+            start_summarizer(OPPONENT, on_output, audio)
         SUMMARIZER_RUNNING = True
-        start_summarizer(OPPONENT, on_output, "audio.mp3", index)
         return {"message": "Summarizer started"}
     else:
         return {"message": "Summarizer is already running"}

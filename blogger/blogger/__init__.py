@@ -73,7 +73,7 @@ async def start_summarizer_endpoint():
     audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
 
     if not SUMMARIZER_RUNNING:
-        if OUTPUT_AUDIO:
+        if OUTPUT_AUDIO == "true":
             p = pyaudio.PyAudio()
             index = p.get_default_output_device_info().get('index')
             start_summarizer(OPPONENT, on_output, audio, index)

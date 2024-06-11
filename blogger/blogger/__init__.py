@@ -45,19 +45,22 @@ def add_entry(entry):
 
 
 async def send_output(client: WebSocket, output: dict):
-    try:
-        await client.send_json(output)
-    except WebSocketDisconnect:
-        websocket_clients.remove(client)
-    except Exception as e:
-        client.send_text(f"Error sending JSON: {e}")
+    # Check to make sure, as client can be remove while iterating
+    if client in websocket_clients:
+        try:
+            await client.send_json(output)
+        except WebSocketDisconnect:
+            websocket_clients.remove(client)
+        except Exception as e:
+            client.send_text(f"Error sending JSON: {e}")
 
 def on_output(output):
     # add_entry(output)
     outputs.append(output)
     if websocket_clients:
         print("Sending JSON")
-        for client in websocket_clients:
+        # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
+        for client in list(websocket_clients):
             # asyncio.run_coroutine_threadsafe(send_output(client, output), event_loop)
             asyncio.run(send_output(client, output))
 

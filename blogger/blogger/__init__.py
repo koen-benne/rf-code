@@ -129,9 +129,9 @@ async def start_summarizer_endpoint():
         if OUTPUT_AUDIO == "true":
             p = pyaudio.PyAudio()
             index = p.get_default_output_device_info().get('index')
-            start_summarizer(OPPONENT, on_output, audio, index)
+            start_summarizer(OPPONENT, on_output, on_stop, audio, index)
         else:
-            start_summarizer(OPPONENT, on_output, audio)
+            start_summarizer(OPPONENT, on_output, on_stop, audio)
         summarizer_running = True
         log("Summarizer started")
         return {"message": "Summarizer started"}

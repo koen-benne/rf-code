@@ -109,8 +109,8 @@ async def health_check():
     return {"status": "ok"}
 
 # Check if summarizer is running
-@app.get("/status")
-async def get_status():
+@app.get("/checkrunning")
+async def check_running():
     return {"status": "running" if summarizer_running else "stopped"}
 
 # Get logs

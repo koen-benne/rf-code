@@ -4,6 +4,7 @@ import pyaudio
 import asyncio
 from datetime import datetime
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Set
 
 from summarizer import start as start_summarizer, stop as stop_summarizer
@@ -20,6 +21,30 @@ summarizer_running = False
 websocket_clients: Set[WebSocket] = set()
 outputs = []
 logs = []
+
+app = FastAPI()
+
+# List of allowed origins (for development, use "*" to allow all origins, but restrict in production)
+origins = [
+    "http://localhost",
+    "http://localhost:3333",
+    # "http://yourdomain.com",  # Add your allowed origins
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows specific origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+@app.get("/status")
+def read_status():
+    return {"status": "ok"}
+
+# Run the server with: uvicorn filename:app --reload
 
 def log(message):
     print("LOGGED: " + message)

@@ -87,8 +87,8 @@ async def send_output(client: WebSocket, output: dict):
 def on_output(output: str):
     # add_entry(output)
     outputs.append(output)
+    log("Received output")
     if websocket_clients:
-        log("Sending output")
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
         for client in list(websocket_clients):
             asyncio.run(send_output(client, output))

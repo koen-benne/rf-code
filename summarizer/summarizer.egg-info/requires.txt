@@ -1,5 +1,0 @@
-PyAudio==0.2.14
-cffi==1.16.0
-deepgram-sdk==3.2.7
-pyyaml==6.0.1
-openai==1.25.1

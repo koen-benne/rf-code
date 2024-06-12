@@ -11,14 +11,19 @@ from summarizer import start as start_summarizer, stop as stop_summarizer
 app = FastAPI()
 
 OPPONENT = "Ajax"
-SUMMARIZER_RUNNING = False
 FILE_NAME_FORMAT = "feyenoord-{opponent_lower}_{date}.yaml"
 OUTPUT_AUDIO = os.getenv("OUTPUT_AUDIO")
 USE_EXAMPLE_AUDIO = os.getenv("USE_EXAMPLE_AUDIO")
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+summarizer_running = False
 websocket_clients: Set[WebSocket] = set()
 outputs = []
+logs = []
+
+def log(message):
+    print("LOGGED: " + message)
+    logs.append(message)
 
 def load_yaml(file_path):
     try:
@@ -54,35 +59,56 @@ async def send_output(client: WebSocket, output: dict):
         except Exception as e:
             client.send_text(f"Error sending JSON: {e}")
 
-def on_output(output):
+def on_output(output: str):
     # add_entry(output)
     outputs.append(output)
     if websocket_clients:
-        print("Sending JSON")
+        log("Sending output")
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
         for client in list(websocket_clients):
-            # asyncio.run_coroutine_threadsafe(send_output(client, output), event_loop)
             asyncio.run(send_output(client, output))
+
+def on_stop(message: str):
+    global summarizer_running
+
+    summarizer_running = False
+    log("Summarizer stopped with error: " + message)
+    for client in websocket_clients:
+        client.send_text(message)
+        client.close()
+        websocket_clients.remove(client)
 
 # Respond to health check, necessary for Coolify
 @app.get("/")
 async def health_check():
     return {"status": "ok"}
 
+# Check if summarizer is running
+@app.get("/status")
+async def get_status():
+    return {"status": "running" if summarizer_running else "stopped"}
+
+# Get logs
+@app.get("/logs")
+async def get_logs():
+    # Get the last 50 logs
+    return logs[-50:]
+
 @app.post("/start")
 async def start_summarizer_endpoint():
-    global SUMMARIZER_RUNNING
+    global summarizer_running
 
     audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
 
-    if not SUMMARIZER_RUNNING:
+    if not summarizer_running:
         if OUTPUT_AUDIO == "true":
             p = pyaudio.PyAudio()
             index = p.get_default_output_device_info().get('index')
             start_summarizer(OPPONENT, on_output, audio, index)
         else:
             start_summarizer(OPPONENT, on_output, audio)
-        SUMMARIZER_RUNNING = True
+        summarizer_running = True
+        log("Summarizer started")
         return {"message": "Summarizer started"}
     else:
         return {"message": "Summarizer is already running"}
@@ -94,10 +120,11 @@ async def get_results():
 
 @app.post("/stop")
 async def stop_summarizer_endpoint():
-    global SUMMARIZER_RUNNING
-    if SUMMARIZER_RUNNING:
+    global summarizer_running
+    if summarizer_running:
         stop_summarizer()
-        SUMMARIZER_RUNNING = False
+        summarizer_running = False
+        log("Summarizer stopped")
     else:
         return {"message": "Summarizer is not running"}
 

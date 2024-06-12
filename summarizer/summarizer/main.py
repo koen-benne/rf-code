@@ -18,6 +18,7 @@ completed = False
 transcription_thread = None
 summarizer_thread = None
 on_output = None
+on_stop = None
 
 def completeTranscription():
     global currentTranscription, summarizer_thread, on_output
@@ -31,7 +32,7 @@ def completeTranscription():
     summarizer_thread.start()
 
 # Event handler for receiving messages from deepgram
-def on_message(self, result, **kwargs):
+def on_deepgram_message(self, result, **kwargs):
     global completed, on_output
     sentence = result.channel.alternatives[0].transcript
 
@@ -48,28 +49,36 @@ def on_message(self, result, **kwargs):
         completed = False
     currentTranscription.append(sentence)
 
-# Event handler for receiving metadata from deepgram
-def on_metadata(self, metadata, **kwargs):
-    print(f"\n\n{metadata}\n\n")
+def on_breaking_error(message):
+    # Stop the transcription thread
+    stop()
+    if on_stop is not None:
+        on_stop(message)
 
 # Event handler for receiving errors from deepgram
-def on_error(self, error, **kwargs):
-    print(f"\n\n{error}\n\n")
+def on_deepgram_error(self, error, **kwargs):
+    on_breaking_error(error)
 
+def start( \
+        opponent_name: str, \
+        output_callback: Callable[[str], None], \
+        stop_callback: Callable[[str], None], \
+        audio_path: str = DEFAULT_AUDIO_PATH, \
+        output_index: Optional[int] = None):
 
-def start(opponent_name: str, output_callback: Callable[[str], None], audio_path: str = DEFAULT_AUDIO_PATH, output_index: Optional[int] = None):
-    global deepgram, dg_connection, exit, lock_exit, transcription_thread, on_output, opponent
+    global deepgram, dg_connection, exit, lock_exit, transcription_thread, on_output, on_stop, opponent
 
     on_output = output_callback
+    on_stop = stop_callback
     opponent = opponent_name
 
     deepgram = DeepgramClient(API_KEY)
     dg_connection = deepgram.listen.live.v("1")
 
     # Register the event handlers
-    dg_connection.on(LiveTranscriptionEvents.Transcript, on_message)
-    dg_connection.on(LiveTranscriptionEvents.Metadata, on_metadata)
-    dg_connection.on(LiveTranscriptionEvents.Error, on_error)
+    dg_connection.on(LiveTranscriptionEvents.Transcript, on_deepgram_message)
+    # dg_connection.on(LiveTranscriptionEvents.Metadata, on_metadata)
+    dg_connection.on(LiveTranscriptionEvents.Error, on_deepgram_error)
 
     # Configure Deepgram options for live transcription
     options = LiveOptions(
@@ -86,7 +95,7 @@ def start(opponent_name: str, output_callback: Callable[[str], None], audio_path
     dg_connection.start(options)
 
     # Start audio stream thread
-    transcription_thread = threading.Thread(target=streamThread, args=(dg_connection, audio_path, output_index))
+    transcription_thread = threading.Thread(target=streamThread, args=(dg_connection, audio_path, output_index, on_breaking_error))
     transcription_thread.start()
 
 def stop():

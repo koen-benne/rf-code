@@ -7,7 +7,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Set
 
-from blogger import test
+from blogger import writeBlogs
 from summarizer import start as start_summarizer, stop as stop_summarizer
 
 app = FastAPI()
@@ -88,11 +88,13 @@ async def send_output(client: WebSocket, output: dict):
 def on_output(output: str):
     # add_entry(output)
     summaries.append(output)
+
+    blogs = writeBlogs(output.summary, OPPONENT, 3)
     log("Received output")
     if websocket_clients:
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
         for client in list(websocket_clients):
-            asyncio.run(send_output(client, output))
+            asyncio.run(send_output(client, blogs))
 
 def on_stop(message: str):
     global summarizer_running
@@ -123,7 +125,6 @@ async def get_logs():
 @app.post("/start")
 async def start_summarizer_endpoint():
     global summarizer_running
-    test()
 
     audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
 

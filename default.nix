@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  pyproject = lib.importTOML ./blogger/pyproject.toml;
+  pyproject = lib.importTOML ./matchcenterai/pyproject.toml;
   buildWithSetuptools = {
     buildPythonPackage.format = "pyproject";
     mkDerivation.buildInputs = [config.deps.python.pkgs.setuptools config.deps.python.pkgs.setuptools-scm];
@@ -30,7 +30,7 @@ in {
     src = lib.concatStringsSep "/" [
       config.paths.projectRoot
       config.paths.package
-      "blogger"
+      "matchcenterai"
     ];
     nativeBuildInputs = [config.deps.ffmpeg config.deps.flac config.deps.curl config.deps.wget];
     propagatedBuildInputs = [
@@ -41,12 +41,14 @@ in {
   };
 
   buildPythonPackage.pythonImportsCheck = [
+    "blogger"
     "summarizer"
   ];
 
   pip = {
     pypiSnapshotDate = "2024-05-05";
     requirementsList = [
+      "${config.paths.package}/matchcenterai"
       "${config.paths.package}/blogger"
       "${config.paths.package}/summarizer"
     ];
@@ -64,6 +66,7 @@ in {
           config.deps.ffmpeg
         ];
       };
+      blogger = buildWithSetuptools;
       summarizer = buildWithSetuptools;
     };
   };

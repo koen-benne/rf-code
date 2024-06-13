@@ -1,5 +1,5 @@
 [build-system]
-requires = [ "setuptools", "setuptools-scm" ]
+requires = [ "setuptools" ]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,12 +8,5 @@ version = "0.1.0"
 authors = [{ name = "Koen Benne", email = "koen.benne@iodigital.com" }]
 
 dependencies = [
-  "summarizer",
-  "PyAudio",
-  "pyyaml",
-  "fastapi",
-  "uvicorn",
+  "openai==1.25.1"
 ]
-
-[project.scripts]
-blogger = "blogger:main"

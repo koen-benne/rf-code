@@ -7,6 +7,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Set
 
+from blogger import test
 from summarizer import start as start_summarizer, stop as stop_summarizer
 
 app = FastAPI()
@@ -19,7 +20,7 @@ PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 summarizer_running = False
 websocket_clients: Set[WebSocket] = set()
-outputs = []
+summaries = []
 logs = []
 
 app = FastAPI()
@@ -86,7 +87,7 @@ async def send_output(client: WebSocket, output: dict):
 
 def on_output(output: str):
     # add_entry(output)
-    outputs.append(output)
+    summaries.append(output)
     log("Received output")
     if websocket_clients:
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
@@ -122,6 +123,7 @@ async def get_logs():
 @app.post("/start")
 async def start_summarizer_endpoint():
     global summarizer_running
+    test()
 
     audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
 
@@ -139,9 +141,9 @@ async def start_summarizer_endpoint():
         return {"message": "Summarizer is already running"}
 
 
-@app.get("/results")
-async def get_results():
-    return outputs
+@app.get("/summaries")
+async def get_summaries():
+    return summaries
 
 @app.post("/stop")
 async def stop_summarizer_endpoint():

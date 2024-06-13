@@ -12,9 +12,8 @@ def writeBlogs(summary, opponent, choiceAmt):
             }
         ],
         model="gpt-3.5-turbo",
+        n=choiceAmt,
     )
-    # get the first [choiceAmt] choices
-    choices = chatCompletion.choices[:choiceAmt]
     # map choices to list of message.content
-    return [choice.message.content for choice in choices]
+    return [choice.message.content for choice in chatCompletion.choices]
 

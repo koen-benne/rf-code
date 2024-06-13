@@ -160,6 +160,7 @@ async def stop_summarizer_endpoint():
         stop_summarizer()
         summarizer_running = False
         log("Summarizer stopped")
+        return {"message": "Summarizer stopped"}
     else:
         return {"message": "Summarizer is not running"}
 

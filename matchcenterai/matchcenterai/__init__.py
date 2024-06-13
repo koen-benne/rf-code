@@ -5,7 +5,7 @@ import asyncio
 from datetime import datetime
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Set
+from typing import Set, List
 
 from blogger import writeBlogs
 from summarizer import start as start_summarizer, stop as stop_summarizer
@@ -21,6 +21,7 @@ PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 summarizer_running = False
 websocket_clients: Set[WebSocket] = set()
 summaries = []
+blogChoicesList: List[List] = []
 logs = []
 
 app = FastAPI()
@@ -90,6 +91,8 @@ def on_output(output: str):
     summaries.append(output)
 
     blogs = writeBlogs(output['summary'], OPPONENT, 3)
+    blogChoicesList.append(blogs)
+
     log("Received output")
     if websocket_clients:
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration
@@ -145,6 +148,10 @@ async def start_summarizer_endpoint():
 @app.get("/summaries")
 async def get_summaries():
     return summaries
+
+@app.get("/latest_blog_choices")
+async def get_latest_blog_choices():
+    return blogChoicesList[-1]
 
 @app.post("/stop")
 async def stop_summarizer_endpoint():

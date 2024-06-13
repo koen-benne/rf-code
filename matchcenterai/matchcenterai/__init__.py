@@ -89,7 +89,7 @@ def on_output(output: str):
     # add_entry(output)
     summaries.append(output)
 
-    blogs = writeBlogs(output.summary, OPPONENT, 3)
+    blogs = writeBlogs(output['summary'], OPPONENT, 3)
     log("Received output")
     if websocket_clients:
         # Copy websocket_clients to avoid RuntimeError: Set changed size during iteration

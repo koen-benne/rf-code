@@ -189,6 +189,12 @@
         "url": "https://files.pythonhosted.org/packages/be/24/cbb242420021a79c87768dcd22ce028f48ef40913239ad6106c8a557f52c/marshmallow-3.21.2-py3-none-any.whl",
         "version": "3.21.2"
       },
+      "matchcenterai": {
+        "is_direct": true,
+        "path": "matchcenterai",
+        "type": "local",
+        "version": "0.1.0"
+      },
       "mdurl": {
         "is_direct": false,
         "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8",
@@ -419,11 +425,7 @@
         ],
         "attrs": [],
         "blogger": [
-          "fastapi",
-          "pyaudio",
-          "pyyaml",
-          "summarizer",
-          "uvicorn"
+          "openai"
         ],
         "certifi": [],
         "cffi": [
@@ -490,6 +492,14 @@
         "markupsafe": [],
         "marshmallow": [
           "packaging"
+        ],
+        "matchcenterai": [
+          "blogger",
+          "fastapi",
+          "pyaudio",
+          "pyyaml",
+          "summarizer",
+          "uvicorn"
         ],
         "mdurl": [],
         "multidict": [],
@@ -571,5 +581,5 @@
       }
     }
   },
-  "invalidationHash": "0df6bb17a3f88fba40410532eebbce7554fd0c7c07f5bc755c085831f7fbda62"
+  "invalidationHash": "117d77b8dc4f878f8082bbcb94a41f1254b252f9fda5e1c83fd655138fbb065d"
 }

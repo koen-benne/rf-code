@@ -36,11 +36,6 @@ def writeSummary(transcription, on_output):
             'summary': summary
         }
 
-        # addEntry(
-        #     output,
-        #     OUTPUT_FILE_NAME
-        # )
-
         on_output(output)
         client.close()
 

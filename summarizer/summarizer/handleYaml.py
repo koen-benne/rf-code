@@ -14,14 +14,6 @@ def loadYaml(file_path):
     except FileNotFoundError:
         return []
 
-def addEntry(entry, file):
-    data = loadYaml(file)
-
-    data.append(entry)
-
-    with open(file, 'w') as file:
-        yaml.dump(data, file, default_flow_style=False)
-
 def processTranscriptionFiles(file_name):
     data = loadYaml(file_name)
     if not data:

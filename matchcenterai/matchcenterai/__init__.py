@@ -129,7 +129,7 @@ async def get_logs():
 async def start_summarizer_endpoint():
     global summarizer_running
 
-    audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
+    audio = os.path.join(PACKAGE_DIR, "audio.mp3") if USE_EXAMPLE_AUDIO == "true" else "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radio-mp3"
 
     if not summarizer_running:
         if OUTPUT_AUDIO == "true":

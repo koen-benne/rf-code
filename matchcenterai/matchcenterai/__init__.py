@@ -151,6 +151,8 @@ async def get_summaries():
 
 @app.get("/latest_blog_choices")
 async def get_latest_blog_choices():
+    if (len(blogChoicesList) == 0):
+        return []
     return blogChoicesList[-1]
 
 @app.post("/stop")

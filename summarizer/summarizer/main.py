@@ -7,7 +7,7 @@ from deepgram import (
 )
 from .writer import writeSummary
 from .threads import streamThread
-from .config import API_KEY, MIN_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION, DEFAULT_AUDIO_PATH
+from .config import API_KEY, MIN_TRANSCRIPT_LENGTH, MAX_TRANSCRIPT_LENGTH, DEBUG_TRANSCRIPTION, DEFAULT_AUDIO_PATH
 from .handleYaml import getKeywords, getReplacements
 from .state import opponent, lock_exit, exit_threads
 
@@ -40,7 +40,7 @@ def on_deepgram_message(self, result, **kwargs):
     if DEBUG_TRANSCRIPTION:
         print(f"Transcription: {sentence}")
     else:
-        if len(sentence) == 0:
+        if len(sentence) == 0 or len(currentTranscription) > MAX_TRANSCRIPT_LENGTH:
             if completed:
                 return
             completed = True

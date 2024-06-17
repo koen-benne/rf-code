@@ -11,6 +11,7 @@ DEFAULT_AUDIO_PATH = "http://d2e9xgjjdd9cr5.cloudfront.net/icecast/rijnmond/radi
 API_KEY = os.getenv("DEEPGRAM_API_KEY")
 # OUTPUT_FILE_NAME = "output/Feyenoord-" + OPPONENT + "_" + str(datetime.today()).split()[0] +".yaml"
 MIN_TRANSCRIPT_LENGTH = 6
+MAX_TRANSCRIPT_LENGTH = 5
 
 VERBOSE = True
 DEBUG_TRANSCRIPTION = False

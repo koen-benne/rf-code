@@ -88,6 +88,7 @@ async def send_output(client: WebSocket, output: dict):
 
 def on_output(output: str):
     # add_entry(output)
+    print(output['summary'])
     summaries.append(output)
 
     blogs = writeBlogs(output['summary'], OPPONENT, 3)

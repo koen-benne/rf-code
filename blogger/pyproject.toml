@@ -10,3 +10,5 @@ authors = [{ name = "Koen Benne", email = "koen.benne@iodigital.com" }]
 dependencies = [
   "openai==1.25.1"
 ]
+
+

@@ -1,7 +1,9 @@
 from openai import OpenAI
 import os
+import re
 import datetime
 from .state import opponent
+from .handleYaml import getFeyenoordLastNames, getOpponentLastNames
 
 def writeSummary(transcription, on_output):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -18,6 +20,7 @@ def writeSummary(transcription, on_output):
         )
         return chatCompletion.choices[0].message.content
 
+    transcription = add_club_to_player(transcription)
 
     correctedTranscript = promptGpt3_5("'" + transcription +\
             "'\n\nDit is een automatisch transcript van een Feyenoord-" + opponent +\
@@ -36,6 +39,24 @@ def writeSummary(transcription, on_output):
             'summary': summary
         }
 
-        on_output(output)
+        on_output(transcription)
         client.close()
 
+def add_club_to_player(transcription):
+    feyenoord_last_names = getFeyenoordLastNames()
+    opponent_last_names = getOpponentLastNames()
+
+    # Construct a translation map for Feyenoord players
+    feyenoord_map = {name: f"{name} van Feyenoord" for name in feyenoord_last_names}
+    # Construct a translation map for opponent players
+    opponent_map = {name: f"{name} van {opponent}" for name in opponent_last_names}
+    # Merge both maps
+    translation_map = {**feyenoord_map, **opponent_map}
+    # Create a regex pattern to match any player name
+    pattern = re.compile(r'\b(' + '|'.join(map(re.escape, translation_map.keys())) + r')\b')
+    # Function to replace names using the translation map
+    def translate(match):
+        return translation_map[match.group(0)]
+    # Use re.sub with the translation function
+    result = pattern.sub(translate, transcription)
+    return result

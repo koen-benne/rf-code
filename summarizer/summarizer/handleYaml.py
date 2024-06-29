@@ -30,3 +30,12 @@ def getReplacements():
     opponent_replacements = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/replacements-{opponent.lower()}.yaml"))
     return feyenoord_replacements + opponent_replacements
 
+def getFeyenoordLastNames():
+    feyenoord_keywords = processTranscriptionFiles(os.path.join(package_dir, "transcription-configs/last-names-feyenoord.yaml"))
+    feyenoord_last_names = [key for key, value in feyenoord_keywords.items() if isinstance(value, (int, float)) and 0 <= value <= 34]
+    return feyenoord_last_names
+
+def getOpponentLastNames():
+    opponent_keywords = processTranscriptionFiles(os.path.join(package_dir, f"transcription-configs/last-names-{opponent.lower()}.yaml"))
+    opponent_last_names = [key for key, value in opponent_keywords.items() if isinstance(value, (int, float)) and 0 <= value <= 26]
+    return opponent_last_names

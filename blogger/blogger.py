@@ -12,7 +12,7 @@ def writeBlogs(summary, opponent, choiceAmt):
                         + opponent + " kleine, niet te diepgaande teksten schrijft over de wedstrijd. Bij veelbelovende momenten voor Feyenoord\
                         wordt je erg blij en schrijf je met uitroeptekens.\n\nSchrijf zo een hele korte tekst in weinig en korte,\
                         informele Nederlandse zinnen waarbij de belangrijke aspecten eerst komen. Benoem geen commentatoren. \
-                        Doe dit op basis van de volgende informatie:\n\n" + summary,
+                        Doe dit op basis van de volgende korte samenvatting, deze samenvatting kan fouten bevatten:\n\n" + summary,
             }
         ],
         model="gpt-3.5-turbo",

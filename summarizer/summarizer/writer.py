@@ -24,7 +24,7 @@ def writeSummary(transcription, on_output):
 
     correctedTranscript = promptGpt3_5("'" + transcription +\
             "'\n\nDit is een automatisch transcript van een Feyenoord-" + opponent +\
-            " wedstrijd. Mogelijk kloppen sommige woorden en interpunctie niet. Verbeter de tekst.")
+            " wedstrijd. Mogelijk kloppen sommige woorden en interpunctie niet en is er herhaling. Verbeter de tekst.")
 
     relevancy = promptGpt3_5("'" + correctedTranscript +\
             "'\n\nBeschrijft dit een relevant moment van de wedstrijd? Antwoord alleen ja of nee.")
@@ -39,7 +39,7 @@ def writeSummary(transcription, on_output):
             'summary': summary
         }
 
-        on_output(transcription)
+        on_output(output)
         client.close()
 
 def add_club_to_player(transcription):

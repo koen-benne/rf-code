@@ -32,8 +32,12 @@ def getReplacements():
 
 def getFeyenoordLastNames():
     data = loadYaml(os.path.join(package_dir, "transcription-configs/keywords-feyenoord.yaml"))
+    if not data:
+        return []
     return [key for key, value in data.items() if isinstance(value, (int, float)) and 0 <= value <= 34]
 
 def getOpponentLastNames():
     data = loadYaml(os.path.join(package_dir, f"transcription-configs/keywords-{opponent.lower()}.yaml"))
+    if not data:
+        return []
     return [key for key, value in data.items() if isinstance(value, (int, float)) and 0 <= value <= 26]

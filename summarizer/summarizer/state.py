@@ -1,6 +1,6 @@
 import threading
 
-opponent = ""
+opponent = "ajax"
 exit = False
 def exit_threads():
     global exit

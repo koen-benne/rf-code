@@ -35,11 +35,11 @@ def getFeyenoordLastNames():
     if not data:
         return []
     list = [key for key, value in data.items()]
-    return list[:26]
+    return list[-26:]
 
 def getOpponentLastNames():
     data = loadYaml(os.path.join(package_dir, f"transcription-configs/keywords-{opponent.lower()}.yaml"))
     if not data:
         return []
     list = [key for key, value in data.items()]
-    return list[:34]
+    return list[-34:]
